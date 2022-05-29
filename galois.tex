@@ -28,19 +28,60 @@ I also think that there's a lot of historical mystique around the field as well 
 Some prerequisites -- while you don't technically need to have any background in algebra to understand the book, I will assume familiarity with group theory in these notes. These notes are a distillation of the important developments in the field's history and while the book does go out of its way to also explain groups and stuff, I won't. There's also the whole story about solving the cubic/quartic with Cardano and Tartaglia and Ferrari and del Ferro which is commonly used as historical setup for Abel-Ruffini, a theorem often discussed in a treatment Galois theory -- if you're interested in the story, I won't rehash it here as so many people do it, but if you don't know about it you should find out! Veritasium has a really nice popular depiction of it and he does a much better job than I ever could so I'll assume you'll get the story from elsewhere and I won't have to talk about it.
 
 \section{History of Solving Polynomial Equations}
-A brief history:
+A brief history of solving polynomial equations (of degree higher than 1):
 \begin{itemize}
-	\item a
-	\item b
-	\item c
-	\item d
+	\item The Babylonians knew how to solve quadratics! This is akin to Po-Shen Loh's method of solving quadratics today -- conceiving it instead as a puzzle in which you have to figure out two numbers (the roots of a quadratic) given only their sum and product.
+	\item Not a lot of progress on cubics and quartics until the aforementioned developments by del Ferro/Cardano/Tartaglia in the 16th century -- there's a surprising amount of drama and tea here. The main ideas:
+	      \begin{itemize}
+		      \item Depressing the cubic -- take cubics of the form $x^3 + ax^2 + bx + c$ and introduce the change of variables $y = x - \frac a 3$, which eliminates the quadratic term. Leaves you with an equation of the form $y^3 + py + q$.
+		      \item Guess that $y = m - n$. Substituting, you can see that a good heuristic for the solution is that $3mn = p$, $m^3 - n^3 + q = 0$. Note that $27m^6 - 27 m^3 n^3 + 27 m^3 q = 0$ as well, but $27 m^3 n^3 = p^3$, so you actually have a quadratic in $m^3$ now, allowing you to solve for $m$ and $n$ now, and then unwinding to get $y$ and then $x$.
+	      \end{itemize}
+	\item Quartics would fall very shortly after due to Ferrari. This is more undisputed I think? Again, just the main ideas:
+	      \begin{itemize}
+		      \item Depress the quartic now -- introduce the change of variables $y = x - \frac a 4$ for the quartic $x^4 + ax^3 + bx^2 + cx + d$, which leaves a new quartic $y^4 + py^2 + qy + r$.
+		      \item Introduce a new variable $z$, and consider $(y^2 + z)^2 = y^4 + 2 y^2z + z^2 = (-p + 2z)y^2 - qy - r + z^2$. Heuristically, we want to be able to take the square root of the RHS. This means that this quadratic in $y$ actually has to have a single root, so this happens when $q^2 - 4(-p + 2z)(z^2 - r) = 0$. This gives a cubic in $z$ that can be solved!
+		      \item Solve for $z$ using the procedure for a cubic. If $z$ is now chosen appropriately, we get that $(y^2 + z) = \pm \sqrt{-p + 2z} \left(y - \frac q{2(-p + 2z)} \right)$, which gives a quadratic that can now be solved.
+	      \end{itemize}
+	\item Abel shows in the 19th century (c. 1820) that it's impossible to solve qunitics or higher in general form in the same way as above. (This proof is not based in Galois theory, but uses some of the techniques mentioned in future sections.)
+
+	      Note that this is about a 300-year gap without seemingly much progress on this problem! What were people up to in that time?
 \end{itemize}
 
-\subsection{Newton's Theorem for Symmetric Polynomials}
+\subsection{Fundamental Theorem on Symmetric Polynomials, Vieta's Formulas, Newton's Sums}
+One of the most important developments in algebra (for us) in the time between the time of the Great Italian War of Cubics and Quartics and Abel's big contribution in the early 1800s is a development in the theory of symmetric polynomials.
+
+First, I feel like I have to mention Francois Viete here, along with Vieta's formulas -- discovered in the late 16th century. I do need to provide a definition first --
+\begin{definition}
+	The \textbf{$k$th elementary symmetric polynomial} on $n$ variables $x_1, x_2, \dots, x_n$, $e_k(x_1, x_2, \dots, x_n)$ is the sum of all $\binom n k$ terms $x_{i_1} x_{i_2} \dots x_{i_k}$ ($i_1 < i_2 < \dots < i_k$) where all of the $i_j \in [n]$.
+\end{definition}
+Viete figured out how to express elementary symmetric polynomials in the roots of a polynomial in terms of the coefficients of that polynomial:
+\begin{theorem}[Vieta's Formulas]
+	If a polynomial $a_n x^n + \dots + a_1 x + a_0$ has roots $r_1, r_2, \dots, r_n$, then the elementary symmetric polynomials are expressible in terms of the roots. In particular, $e_{k}(r_1, r_2, \dots, r_n) = (-1)^{k} \frac{a_{n-k}}{a_n}$.
+\end{theorem}
+The proof of this theorem is fairly straightforward -- just expand $a_n (x - r_1) \dots (x - r_n)$ and it sort of just appears combinatorially.
+
+Later on, towards the end of the 17th century, it's clear that Newton knew how to express many different symmetric sums of roots of a polynomial in terms of its roots. His results were many specific cases of this (important!) theorem:
+\begin{definition}
+	A polynomial in $n$ variables $P(x_1, \dots, x_n)$ is \textbf{symmetric} if interchanging any two $x_i$ and $x_j$ does not change the polynomial.
+\end{definition}
+\begin{theorem}[Fundamental Theorem on Symmetric Polynomials]
+	Every symmetric polynomial (in $n$ variables) can be expressed as a polynomial in the elementary symmetric polynomials (in $n$ variables) $e_k$.
+\end{theorem}
+This theorem was widely cited/known before the time of Galois, but the first known proof of this statement comes to us from the 19th century. Oops. We'll prove it here too:
+\begin{proof}
+	We proceed by induction on $n$, the number of variables. The theorem is sort of silly for $n = 1$, so that'll be our base case.
+
+	Our inductive hypothesis (needs completion)
+
+
+\end{proof}
+
+As a corollary, we now get that \textbf{any symmetric polynomial in the roots of a polynomial is expressible in terms of the coefficients of that polynomial}. This now just follows from combining Vieta's Formulas and the fundamental theorem on symmetric polynomials.
 
 \section{Lagrange Resolvents}
 
 \section{Gauss and Cyclotomic Polynomials}
+A \textit{cyclotomic polynomial} is a
 
 \section{Galois Resolvents}
 
