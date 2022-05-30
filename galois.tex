@@ -69,18 +69,84 @@ Later on, towards the end of the 17th century, it's clear that Newton knew how t
 \end{theorem}
 This theorem was widely cited/known before the time of Galois, but the first known proof of this statement comes to us from the 19th century. Oops. We'll prove it here too:
 \begin{proof}
-	We proceed by induction on $n$, the number of variables. The theorem is sort of silly for $n = 1$, so that'll be our base case.
+	We proceed by induction on $n$, the number of variables. The theorem is sort of silly for $n = 1$, so that'll be our base case. (With one variable, the only symmetric polynomial you can really have is just a polynomial, which is clearly a polynomial in that one variable.)
 
-	Our inductive hypothesis (needs completion)
+	Our inductive hypothesis will be that the every symmetric polynomial in $n-1$ variables can be expressed as a polynomial in the elementary symmetric polynomials in $n-1$ variables. Now, let's say we have a symmetric polynomial in $n$ variables, $F(x_1, x_2, \dots, x_n)$. Let's split $F$ into powers of $x_n$, and suppose that the highest degree of $x_n$ that appears is $m$, so $F$ can be decomposed:
+	\[
+		F(x_1, x_2, \dots, x_n) = F_0 + F_1x_n + F_2 x_n^2 + \dots F_m x_n^m
+		.\]
+	where now each of the $F_k$s for $0 \leq k \leq m$ have to be symmetric polynomials in $x_1, \dots, x_{n-1}$. This must be true as if some $F_i$ were not symmetric in the $x_1, \dots, x_{n-1}$, then $F$ would not be either. Therefore, we can apply the inductive hypothesis to each of the $F_k$s, so we know that they can all be written as a sum of elementary symmetric polynomials $e_k^{(n-1)}$ in $x_1, \dots, x_{n-1}$. As such, $F_k(x_1, \dots, x_{n-1}) = f_k(e_1^{(n-1)}, \dots, e_{n-1}^{(n-1)})$ for a different polynomial $f_k$ in the $e_k^{(n-1)}$s.
 
+	We're not done yet though, we still need to write $F$ in terms of the elementary symmetric polynomials in $x_1, \dots, x_n$, $e_k^{(n)}$. Let's get one step closer now by relating the $e_k^{(n)}$ to $e_k^{(n-1)}$ in the following way:
+	\begin{align*}
+		e_1^{(n)}     & = e_1^{(n-1)} + x_n                     \\
+		e_2^{(n)}     & = e_2^{(n-1)} + x_n e_1^{(n-1)}         \\
+		e_3^{(n)}     & = e_3^{(n-1)} + x_n e_3^{(n-1)}         \\
+		\vdots
+		e_{n-1}^{(n)} & = e_{n-1}^{(n-1)} + x_n e_{n-2}^{(n-1)} \\
+		e_n^{(n)}     & =  x_n e_{n-1}^{(n-1)}                  \\
+	\end{align*}
+	In particular, we can then write $e_k^{(n-1)}$ as a polynomial in $x_n$ and the $e_k^{(n)}$s (this can easily be seen by induction). This allows us to rewrite each of the $f_k(e_1^{(n-1)}, \dots, e_{n-1}^{(n-1)})$ as polynomials in $e_k^{(n)}$ and $x_n$, which will require us to recollect terms.
 
+	We can reduce this further -- by backsubstituting each of the last equations from the end into the last, we can find the following identity for $e_n^{(n)}$ in terms of $x_n$ and lower $e_k^{(n)}$ for $k < n$:
+	\[
+		e_n^{(n)} - x_n e_{n-1}^{(n)} + x_n^2 e_{n-2}^{(n)} + \dots + (-1)^n x_n^n = 0
+		.\]
+	This allows us to reduce the maximal degree until all terms have powers of $x_n$ less than $n$, so we can write
+	\[
+		F(x_1, \dots, x_n) = h_0(e_1^{(n)}, \dots, e_n^{(n)}) + h_1(e_1^{(n)}, \dots, e_n^{(n)})x_n + \dots + h_{n-1}(e_1^{(n)}, \dots, e_n^{(n)}) x_n^{n-1}
+		.\]
+	We now want to show that all of the $h_i$s for $i > 0$ are identically 0 to finish the induction.
+
+	Recall again that $F$ is a symmetric polynomial, so swapping $x_n$ with any other $x_i$ should leave the same result. Since each of the $h_k$s are polynomials in elementary symmetric polynomials, swapping $x_n$ and any other $x_i$ would also leave them the same, so this swap would only change the powers of $x_n$. If we do this for every other variable, we get the following system of equations:
+	\begin{align*}
+		F(x_1, \dots, x_n) & = h_0 + h_1 x_1 + \dots + h_{n-1} x_1^{n-1} \\
+		F(x_1, \dots, x_n) & = h_0 + h_1 x_2 + \dots + h_{n-1} x_2^{n-1} \\
+		\vdots
+		F(x_1, \dots, x_n) & = h_0 + h_1 x_n + \dots + h_{n-1} x_n^{n-1} \\
+	\end{align*}
+	We can view this as a matrix equation:
+	\[
+		\bmat{F(x_1, \dots, x_n) \\ F(x_1, \dots, x_n) \\ \vdots \\ F(x_1, \dots, x_n)} = \bmat{ 1 & x_1 & \dots & x_1^{n-1} \\
+		1 & x_2 & \dots & x_2^{n-1} \\
+		\vdots & \vdots & \ddots & \vdots \\
+		1 & x_n & \dots & x_n^{n-1}}
+		\bmat{h_0 \\ h_1 \\ \vdots \\ h_{n-1}}
+		.\]
+	Let the matrix in this equation be $V(x_1, \dots, x_n)$. Note that $V \vect x = \tbmat{F(x_1, \dots, x_n) \\ F(x_1, \dots, x_n) \\ \vdots \\ F(x_1, \dots, x_n)}$ has another solution, namely $\vect x = \tbmat{F(x_1, \dots, x_n) \\ 0 \\ \vdots \\ 0}$. However, note that $V$ is invertible in the general case -- we can show this by showing $\det V \neq 0$ by induction on the number of variables. (In particular, the determinant of $V$ is called the \textbf{Vandermonde determinant}, and it's zero iff two of the $x_i$s are equal.) Therefore, the system has a unique solution and therefore all of the $h_i$s for $i > 0$ must be identically 0.
+
+	(Another way to finish this off -- consider the polynomial $H(y) = -F(x_1, \dots, x_n) + h_0 + h_1 y + \dots + h_{n-1} y^{n-1}$, which has $n$ roots at $x_1, x_2, \dots, x_n$, so it must be divisible by $\prod_{j=1}^n (y - x_n)$. Looking at the degree, however, this is only possible if $H(y) = 0$, which implies the same result).
+
+	Therefore, $F(x_1, \dots, x_n) = h_0(e_1^{(n)}, \dots, e_n^{(n)})$, so the symmetric polynomial $F$ is expressible as a polynomial in the elementary symmetric polynomials in $n$ variables. By induction, then, the statement holds for all $n \geq 1$, as desired.
 \end{proof}
 
-As a corollary, we now get that \textbf{any symmetric polynomial in the roots of a polynomial is expressible in terms of the coefficients of that polynomial}. This now just follows from combining Vieta's Formulas and the fundamental theorem on symmetric polynomials.
+\begin{remark}
+	\textit{Newton's sums} are a particular case of this theorem, i.e. when $F(x_1, \dots, x_n) = x_1^k + \dots + x_n^k$. Call this polynomial the $k$th power sum of the $x_i$s, $P_k$. The case of the fundamental theorem on symmetric polynomials that is attributed to Newton is a formula for $P_k$ in terms of the elementary symmetric polynomials:
+	\[
+		P_k = P_{k-1} e_1 - P_{k-2} e_2 + \dots + (-1)^{k} P_1 e_{k-1} + (-1)^{k+1} k e_k
+		.\]
+	This is useful for finding the sum of the $k$th powers of the roots of a polynomial recursively.
+\end{remark}
+
+As a corollary, we now get that \textbf{any symmetric polynomial in the roots of a polynomial is expressible in terms of the coefficients of that polynomial}. This now just follows from combining Vieta's Formulas and the fundamental theorem on symmetric polynomials. This will turn out to be a good motivator for parts of Galois theory down the line when we introduce group actions.
 
 \section{Lagrange Resolvents}
+Let's introduce a new way to go about solving polynomial equations (due to Vandermonde and Lagrange) in the late 18th century, now involving the roots of unity. First, let's introduce the following example for quadratics.
+
+Suppose we have a quadratic with roots $x$ and $y$. Then we claim that the expression $\frac 12 ( (x + y) \pm  \sqrt{ (x-y)^2 })$ takes on both of the values of the roots. If we take the positive branch, then $\frac 12( x + y + x - y ) = x$, and on the negative branch, $\frac 12( x + y - (x - y)) = y$. Therefore, in theory, all we would need to do is just evaluate $x + y$ (using Vieta) and $(x - y)^2$ (some other way) and we'd have solved the quadratic. Indeed, we can get $(x-y)^2$ from $(x+y)^2 - 4xy$, which returns us the familiar quadratic formula when we write these expressions in the coefficients of the quadratic.
+
+Okay, that was a little silly, but we can actually do this for higher-degree polynomials too, we just have to use different roots of unity. For a cubic, if $\omega = e^{\frac{2\pi i}3}$, then we should consider the quantity
+\[ \frac 13 [(x + y + z) + ((x + \omega y + \omega^2 z)^3)^{\frac 13} + ((x + \omega^2 y  + \omega z)^3)^{\frac 13}].\]
+Here we get nine different values upon choosing different branches for the evaluation of the cube roots, only three of which actually produce solutions (in particular, these three are taking no additional factors of $\omega$ on either term, and then putting $\omega$ on one and $\omega^2$ on the other, in either order).
+
+Is this even possible to evaluate? Technically, yes -- if we let $u = (x + \omega y + \omega^2 z)^3$ and $v = (x + \omega^2 y + \omega z)^3$, then $u+v$ and $uv$ are symmetric in $x, y, z$, which means that we can use the results from the previous section to evaluate them both. Note that if we swap $y$ and $z$, both quantities are invariant, and also cyclic permutations $(x y z)$ also leave both invariant, and these generate all permutations of $x, y, z$. As such, it's theoretically possible, but still maybe not great because we still have the issue of getting 9 solutions, but only a third are actually the ones we want. Can we do better?
+
+This first method is due to Vandermonde in 1770 (same guy whose name appears in the determinant in the previous section, and in Vandermonde's identity from combinatorics, but that's maybe it[?]), but Lagrange a little later towards the end of the 18th century (c. 1790) developed a better way using a similar idea.
+
 
 \section{Gauss and Cyclotomic Polynomials}
+We've been discussing the roots of unity when we introduced Lagrange resolvents as a new way to
+
 A \textit{cyclotomic polynomial} is a
 
 \section{Galois Resolvents}
