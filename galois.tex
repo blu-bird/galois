@@ -143,6 +143,21 @@ Is this even possible to evaluate? Technically, yes -- if we let $u = (x + \omeg
 
 This first method is due to Vandermonde in 1770 (same guy whose name appears in the determinant in the previous section, and in Vandermonde's identity from combinatorics, but that's maybe it[?]), but Lagrange a little later towards the end of the 18th century (c. 1790) developed a better way using a similar idea.
 
+For a cubic with roots $x, y, z$, consider instead the quantity $t = x + \omega y + \omega^2 z$, where $x, y, z$ are the roots in some order. (Assume here the roots are all distinct -- we'll see how to deal with polynomials where they are not.) As such, $t$ will take on six values, $t_1, t_2, \dots t_6$. Take these values to be the roots of a sixth-degree equation: 
+\[
+    L(x) = (x - t_1) (x - t_2) (x - t_3) (x - t_4) (x - t_5) (x - t_6)
+\]
+This polynomial $L(x)$ is called the \textit{Lagrange resolvent}. While it is a sixth-degree polynomial, note that this is actually a quadratic in $x^3$, as for some $t_1$, $\omega t_1$ and $\omega^2 t_1$ are two of the other $t_i$s, so those three terms can be collected as $x^3 - t_1^3$. The other three factors can similarly be collected as $x^3 - t_4^3$ for some suitable labeling. Either way, we can solve for $t_1$ and $t_4$ now, which will be Vandermonde's $x + \omega y + \omega^2 z$ and $x + \omega^2 y + \omega z$, and the coefficients are precisely the above $u + v$ and $uv$. The only problem now is to identify which of the six solutions of the resolvent to use to generate the solutions. 
+
+Lagrange deals with this by stating for any solution of the resolvent, WLOG let $t = x + \omega y + \omega^2 z$. Then, note that $w = (x + \omega y + \omega^2 z)(x + \omega^2 y + \omega z)$ is symmetric in $x, y, z$, as we just see by expansion (or by noting that if $uv$ is symmetric in $x, y, z$, so must its cube root): 
+\[
+    w = x^2 + \omega^2 xy + \omega xz + \omega xy + y^2 + \omega^2 yz + \omega^2 xz + \omega yz + z^2 = x^2 + y^2 + z^2 - (xy + yz + zx) 
+\]
+Then, we can just compute $w$ explicitly and then take $\frac w t$ as the corresponding other solution of the resolvent that is needed to match $t$, so we're all good. 
+
+Note that this method relies more on the properties of symmetric polynomials and less of a guess/ansatz, but requires us to solve a higher degree equation. In particular, we can do the same thing with quartics, and it might seem like we might want different roots of unity here: 
+
+
 
 \section{Gauss and Cyclotomic Polynomials}
 We've been discussing the roots of unity when we introduced Lagrange resolvents as a new way to
