@@ -131,10 +131,12 @@ This theorem was widely cited/known before the time of Galois, but the first kno
 As a corollary, we now get that \textbf{any symmetric polynomial in the roots of a polynomial is expressible in terms of the coefficients of that polynomial}. This now just follows from combining Vieta's Formulas and the fundamental theorem on symmetric polynomials. This will turn out to be a good motivator for parts of Galois theory down the line when we introduce group actions.
 
 \section{Lagrange Resolvents}
-Let's introduce a new way to go about solving polynomial equations (due to Vandermonde and Lagrange) in the late 18th century, now involving the roots of unity. First, let's introduce the following example for quadratics.
+Let's introduce a new way to go about solving polynomial equations (due to Vandermonde and Lagrange) in the late 18th century, now involving the roots of unity. We'll build these up for polynomials of varying degree, starting with the following example for quadratics and working our way upwards. 
 
-Suppose we have a quadratic with roots $x$ and $y$. Then we claim that the expression $\frac 12 ( (x + y) \pm  \sqrt{ (x-y)^2 })$ takes on both of the values of the roots. If we take the positive branch, then $\frac 12( x + y + x - y ) = x$, and on the negative branch, $\frac 12( x + y - (x - y)) = y$. Therefore, in theory, all we would need to do is just evaluate $x + y$ (using Vieta) and $(x - y)^2$ (some other way) and we'd have solved the quadratic. Indeed, we can get $(x-y)^2$ from $(x+y)^2 - 4xy$, which returns us the familiar quadratic formula when we write these expressions in the coefficients of the quadratic.
+\subsection{Quadratics}
+Suppose we have a quadratic with roots $x$ and $y$. Then we claim that the expression $\frac 12 ( (x + y) \pm  \sqrt{ (x-y)^2 })$ takes on both of the values of the roots. If we take the positive branch, then $\frac 12( x + y + x - y ) = x$, and on the negative branch, $\frac 12( x + y - (x - y)) = y$. Therefore, in theory, all we would need to do is just evaluate $x + y$ (using Vieta) and $(x - y)^2$ (some other way) and we'd have solved the quadratic. Indeed, we can get $(x-y)^2$ from $(x+y)^2 - 4xy$, which returns us the familiar quadratic formula when we write these expressions in the coefficients of the quadratic. 
 
+\subsection{Cubics}
 Okay, that was a little silly, but we can actually do this for higher-degree polynomials too, we just have to use different roots of unity. For a cubic, if $\omega = e^{\frac{2\pi i}3}$, then we should consider the quantity
 \[ \frac 13 [(x + y + z) + ((x + \omega y + \omega^2 z)^3)^{\frac 13} + ((x + \omega^2 y  + \omega z)^3)^{\frac 13}].\]
 Here we get nine different values upon choosing different branches for the evaluation of the cube roots, only three of which actually produce solutions (in particular, these three are taking no additional factors of $\omega$ on either term, and then putting $\omega$ on one and $\omega^2$ on the other, in either order).
@@ -155,8 +157,32 @@ Lagrange deals with this by stating for any solution of the resolvent, WLOG let 
 \]
 Then, we can just compute $w$ explicitly and then take $\frac w t$ as the corresponding other solution of the resolvent that is needed to match $t$, so we're all good. 
 
-Note that this method relies more on the properties of symmetric polynomials and less of a guess/ansatz, but requires us to solve a higher degree equation. In particular, we can do the same thing with quartics, and it might seem like we might want different roots of unity here: 
+Note that this method relies more on the properties of symmetric polynomials and less of a guess/ansatz, but requires us to solve a higher degree equation. In particular, we can do the same thing with quartics and higher degree polynomials as well. 
 
+\subsection{Quartics}
+Quartics turn out to be easier with both methods. For instance, when employing Vandermonde's method for a quartic with roots $w, x, y, z$, it might seem like we might want to use the following quantity to start: 
+\[
+    \frac 14 [(w + x + y + z) + \sqrt[4]{(w + ix - y - iz)^4} + \sqrt[4]{(w - x + y - z)^4} + \sqrt[4]{(w - ix - y + iz)^4}]
+\]
+but we actually only need to consider the third term $t = w - x + y - z$ when employing Lagrange's method. Taking into consideration all 24 orderings of these 4 roots, we actually only get 6 possible values for $t$ depending on the ordering ($\pm (w - x + y - z), \pm (w + x - y - z), \pm (w - x - y + z)$). If we call each of these terms $t_1, t_2, t_3$, respectively, then the resolvent is a 24th-degree polynomial, but it can be greatly reduced: 
+\[
+    L(x) = (x + t_1)^4 (x - t_1)^4 (x + t_2)^4 (x - t_2)^4 (x + t_3)^4 (x - t_3)^4 = (x^2 - t_1^2)^4 (x^2 - t_2^2)^4 (x^2 - t_3^2)^4 
+\]  
+Hmm, so let's consider instead $M(x) = (x^2 - t_1^2) (x^2 - t_2^2)(x^2 - t_3^2)$, which is a cubic in $x^2$, and whose coefficients are going to be symmetric in $t_1, t_2, t_3$, so we will get symmetry in $w, x, y, z$ as well. This cubic can be solved with the method of Lagrange resolvents or with Cardano's method, so we'll eventually be able to extract $t_1, t_2,$ and $t_3$. 
+
+Like with the cubic, we won't know just from the extraction of the roots of the resolvent ($M(x)$ or otherwise) how to extract the roots. As above, note that the product $p = t_1 t_2 t_3$ is evaluatable as it's symmetric in $w, x, y, z$. Moreover, if we let $s = w + x + y + z$, taking the following sums gives us each of the roots: 
+\begin{align*}
+    w &= \frac 14 (s + t_1 + t_2 + t_3) \\ 
+    x &= \frac 14 (s - t_1 + t_2 - t_3) \\ 
+    y &= \frac 14 (s + t_1 - t_2 - t_3) \\ 
+    z &= \frac 14 (s - t_1 - t_2 + t_3) \\ 
+\end{align*}
+Picking any two $t_1$ and $t_2$ that aren't negatives of each other, then, and taking $t_3 = \frac p {t_1 t_2}$ will give us the correct sign for $t_3$. We can then play the signs on the $t_1$ and $t_2$ we choose to get all of the solutions we want. 
+
+\subsection{Quintics and Beyond}
+What about doing this for quintics or higher-order polynomials? We simply just have to us higher-order roots of unity -- for instance, for a quintic, a $\zeta = e^{\frac{2\pi}5 i}$ is needed in the term $t$ for the Lagrange resolvent. If our roots are $v, w, x, y, z$, then for the Lagrange method, we want $t = v + \zeta w + \zeta^2 x + \zeta^3 y + \zeta^4 z$, which results in 120 distinct terms, and a degree-120 polynomial as our resolvent. We can simplify by noting that if $t$ is a root of the resolvent, so are $\zeta t$, $\zeta^2 t$, $\zeta^3 t$, and $\zeta^4 t$, so collecting these all together we know we can refactor this as a factor of $x^5 - t^5$ for each distinct ordering of the roots under cyclic permutations. This allows us to write the resolvent as a degree-24 polynomial in $x^5$\dots if only we could know how to proceed by solving degree-24 polynomial equations! So we appear to be kind of stuck here...
+
+The situation is not much better for larger $n$ -- as $n$ grows, the degree of the resolvent grows like $n!$, and it becomes essentially impossible to solve these resolvents for their roots. So we appear to be stuck again in our quest to solve polynomial equations, but we at least have a general procedure for any polynomial! 
 
 
 \section{Gauss and Cyclotomic Polynomials}
@@ -165,6 +191,11 @@ We've been discussing the roots of unity when we introduced Lagrange resolvents 
 A \textit{cyclotomic polynomial} is a
 
 \section{Galois Resolvents}
+In general, Lagrange's idea for solving a degree-$n$ polynomial equation is to concoct some sort of \textit{resolvent}. We saw some examples of resolvents that worked for cubics and quartics, but here are some properties that a general resolvent should have: 
+\begin{itemize}
+    \item It needs to be a polynomial in the elementary symmetric sums of the roots/coefficients of the polynomial and the $n$th roots of unity with rational coefficients (so we know this polynomial is evaluatable).
+    \item We also want the resolvent to help us solve for the roots of the original polynomial.
+\end{itemize}  
 
 \section{Galois Groups}
 
