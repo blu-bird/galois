@@ -130,6 +130,7 @@ This theorem was widely cited/known before the time of Galois, but the first kno
 
 As a corollary, we now get that \textbf{any symmetric polynomial in the roots of a polynomial is expressible in terms of the coefficients of that polynomial}. This now just follows from combining Vieta's Formulas and the fundamental theorem on symmetric polynomials. This will turn out to be a good motivator for parts of Galois theory down the line when we introduce group actions.
 
+
 \section{Lagrange Resolvents}
 Let's introduce a new way to go about solving polynomial equations (due to Vandermonde and Lagrange) in the late 18th century, now involving the roots of unity. We'll build these up for polynomials of varying degree, starting with the following example for quadratics and working our way upwards. 
 
@@ -185,10 +186,22 @@ What about doing this for quintics or higher-order polynomials? We simply just h
 The situation is not much better for larger $n$ -- as $n$ grows, the degree of the resolvent grows like $n!$, and it becomes essentially impossible to solve these resolvents for their roots. So we appear to be stuck again in our quest to solve polynomial equations, but we at least have a general procedure for any polynomial! 
 
 
-\section{Gauss and Cyclotomic Polynomials}
-We've been discussing the roots of unity when we introduced Lagrange resolvents as a new way to
+\section{Aside -- Gauss and Roots of Unity}
+We've been discussing the roots of unity when we introduced Lagrange resolvents, so we'll focus on them a little more now. Recall that $n$th roots of unity are of the form $\cos\left(\frac{2\pi k} n \right) + i \sin \left( \frac{2\pi k} n \right) = e^{\frac{2\pi k}n i}$ for $0 \leq k < n$. In order to manipulate these properly, we'd like to be able to compute these algebraically in terms of roots and standard algebraic operations. Define a \textit{primitive} $n$th root of unity to be a root of unity $e^{\frac{2\pi k}n i}$ such that for any $m < n$, $(e^{\frac{2\pi k}n i})^m \neq 1$. This is equivalent to saying that we want $\gcd(k, n) = 1$, as otherwise if $\gcd(k, n) = d > 1$, then $(e^{\frac{2\pi k}n i})^{\frac n d} = 1$ (and the converse is also true). 
 
-A \textit{cyclotomic polynomial} is a
+Now, to reduce our work down, note that if $\gcd(a, b) = 1$ and $n = ab = \lcm(a, b)$, a primitive $n$th root of unity can be obtained by multiplying together a primitive $a$th root of unity and a primitive $b$th root of unity. This is some standard number theory fare -- note that $\omega$ and $\zeta$ are such roots of unity, then $\omega = e^{\frac{2\pi k}a i}$ and $\zeta = e^{\frac{2\pi l}b i}$, so $\omega \zeta = e^{2\pi i (\frac {kb + la}{ab})}$ with $\gcd(k, a) = 1$ and $\gcd(l, b) = 1$. Note then that $\gcd(kb + la, ab) = 1$ also, so this must be an $ab$th root of unity as well. 
+
+As such, any $n$ can be broken into its prime powers, so it now suffices to find primitive $p^k$th roots of unity. However, a primitive $p^k$th root of unity is merely a $p^{k-1}$st root of a $p$th root of unity by the equivalent formulation of primitive roots of unity, so it suffices really to construct $p$th roots of unity algebraically. So let's do it!  
+
+\subsection{$p$th Roots of Unity}
+This will be initially a little bit of number theory to start. First, we need the existence of a primitive root mod $p$: 
+\begin{lemma}[Existence of Primitive Roots mod $p$]
+For every prime $p$, there is a positive integer $g$ such that every $0 < m < p-1$, $g^m \not\equiv 1 \mod p$, i.e. the smallest positive integer $k$ such that $g^k \equiv 1 \mod p$ is $p-1$. 
+\end{lemma}
+I don't really remember how to prove this or what the proof looks like, so I'll put a proof here so I'll remember at least one for the future: 
+\begin{proof}
+haha haven't done it yet
+\end{proof}
 
 \section{Galois Resolvents}
 In general, Lagrange's idea for solving a degree-$n$ polynomial equation is to concoct some sort of \textit{resolvent}. We saw some examples of resolvents that worked for cubics and quartics, but here are some properties that a general resolvent should have: 
