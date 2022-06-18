@@ -14,7 +14,7 @@
 % TITLE
 \title{Galois Theory -- Historical Perspective}
 \author{Bryan Lu}
-\date{May 2022} % do not use if [nodate] option enabled
+\date{May-June 2022} % do not use if [nodate] option enabled
 
 \begin{document}
 \maketitle
@@ -25,7 +25,7 @@ These are some notes on Galois theory following H. M. Edwards' \textit{Galois Th
 
 I also think that there's a lot of historical mystique around the field as well -- a lot of people know the story of how Evariste Galois was shot and killed in a duel at age 21, and the night before he died he feverishly wrote down the groundwork for this really amazing theory. What a story, right? I kinda like Edwards' book because the smoke and mirrors are cleared here -- you get the benefit of the historical context in which Galois was working, and also understand the angle at which he was coming from when he wrote all that stuff without losing the modern interpretation of the results. I don't think this is a very standard treatment of the subject at all, but I think it's fun nonetheless and will do some mixing in with Dummit and Foote as needed.
 
-Some prerequisites -- while you don't technically need to have any background in algebra to understand the book, I will assume familiarity with group theory in these notes. These notes are a distillation of the important developments in the field's history and while the book does go out of its way to also explain groups and stuff, I won't. There's also the whole story about solving the cubic/quartic with Cardano and Tartaglia and Ferrari and del Ferro which is commonly used as historical setup for Abel-Ruffini, a theorem often discussed in a treatment Galois theory -- if you're interested in the story, I won't rehash it here as so many people do it, but if you don't know about it you should find out! Veritasium has a really nice popular depiction of it and he does a much better job than I ever could so I'll assume you'll get the story from elsewhere and I won't have to talk about it.
+Some prerequisites -- while you don't technically need to have any background in algebra to understand the book, I will assume some familiarity with group theory and ring theory (i.e. ideals, PIDs, UFDs, etc.) and linear algebra at the level of MATH 4330-4340 in these notes. These notes are a distillation of the important developments in the field's history and while the book does go out of its way to also explain groups and rings and stuff (or pull teeth to try and get the tools it needs), I won't. There's also the whole story about solving the cubic/quartic with Cardano and Tartaglia and Ferrari and del Ferro which is commonly used as historical setup for Abel-Ruffini, a theorem often discussed in a treatment Galois theory -- if you're interested in the story, I won't rehash it here as so many people do it, but if you don't know about it you should find out! Veritasium has a really nice popular depiction of it and he does a much better job than I ever could so I'll assume you'll get the story from elsewhere and I won't have to talk about it.
 
 \section{History of Solving Polynomial Equations}
 A brief history of solving polynomial equations (of degree higher than 1):
@@ -183,7 +183,7 @@ Picking any two $t_1$ and $t_2$ that aren't negatives of each other, then, and t
 \subsection{Quintics and Beyond}
 What about doing this for quintics or higher-order polynomials? We simply just have to us higher-order roots of unity -- for instance, for a quintic, a $\zeta = e^{\frac{2\pi}5 i}$ is needed in the term $t$ for the resolvent. If our roots are $v, w, x, y, z$, then for the Lagrange method, we want $t = v + \zeta w + \zeta^2 x + \zeta^3 y + \zeta^4 z$, which results in 120 distinct terms, and a degree-120 polynomial as our resolvent equation. We can simplify by noting that if $t$ is a root of the resolvent equation, so are $\zeta t$, $\zeta^2 t$, $\zeta^3 t$, and $\zeta^4 t$, so collecting these all together we know we can refactor this as a factor of $x^5 - t^5$ for each distinct ordering of the roots under cyclic permutations. This allows us to write the resolvent equation as a degree-24 polynomial in $x^5$\dots if only we could know how to proceed by solving degree-24 polynomial equations! So we appear to be kind of stuck here...
 
-The situation is not much better for larger $n$ -- as $n$ grows, the degree of the resolvent equation grows like $n!$, and it becomes essentially impossible to solve these equations for their roots. So we appear to be stuck again in our quest to solve polynomial equations, but we at least have a general procedure for any polynomial. The only issue is that when computing the resolvent/resolvent equations, we may have to compute some roots of unity in order to compute its coefficients in general, and doing this in general is not necessarily the easiest thing (for roots of unity with factors of primes greater than 11, for instance). 
+The situation is not much better for larger $n$ -- as $n$ grows, the degree of the resolvent equation grows like $n!$, and it becomes essentially impossible to solve these equations for their roots. So we appear to be stuck again in our quest to solve polynomial equations, but we at least have a general procedure for any polynomial. The only issue is that when computing the resolvent/resolvent equations, we may have to compute some roots of unity in order to compute its coefficients in general, and doing this in general is not necessarily the easiest thing (for roots of unity with factors of primes greater than 11, for instance). Gauss was able to find a way to write these roots of unity fully in terms of radicals, but we'll revisit this when his construction is under more solid footing. 
 
 As a historical note, the particular form of the expressions $t$ that we've chosen, e.g. $x + \omega y + \omega^z$, where we have roots of unity as coefficients for each supposed root of the original equation, is called a \textit{Lagrange resolvent}. We could theoretically take any general polynomial in the $n$ roots of a polynomial and try to use them as the roots of a more solvable polynomial when permuting the $n$ roots in all possible ways, and so we want to now study resolvents in general. 
 
@@ -280,11 +280,39 @@ In particular, Lagrange's Rational Function Theorem gives us somewhat of a const
 \subsection{Existence of Galois Resolvents}
 So now, it seems like the key to solving general polynomials through Lagrange's method is to be able to construct a Galois resolvent of a given polynomial equation. How do we do this? In particular, how do we know one exists? 
 
-Galois was the first to realize that these so-called Galois resolvents always existed, and used them extensively in his work. In particular, he claimed that for any polynomial with simple roots $r_1, \dots, r_n$, that a Galois resolvent exists in these roots that is a polynomial with integer coefficients. Let's do it now. 
+Galois was the first to realize that these so-called Galois resolvents always existed, and used them extensively in his work. In particular, he claimed that for any polynomial with distinct simple roots $r_1, \dots, r_n$, that a Galois resolvent exists in these roots that is a polynomial with integer coefficients. He never proved this though, so let's do it now. 
+
+First, a lemma: 
+\begin{lemma}
+Suppose $p(x_1, \dots, x_n)$ is a nonzero polynomial in $n$ variables with rational coefficients. Then, we can find some $(x_1, \dots, x_n) = (a_1, \dots, a_n)$ for $a_i \in \ZZ$ such that $p(a_1, \dots, a_n) \neq 0$. 
+\end{lemma}
+\begin{proof}
+We show this by induction on the number of variables. First, suppose we have a polynomial in one variable $n = 1$ with degree $d \geq 1$. Then, we claim among the integers in $[d+1]$ that for at least one $k \in [d+1]$ that $p(k) \neq 0$. For the sake of contradiction, if there was, then $p(x)$ would have to be identically zero. This gives us the existence of the integer we're looking for. 
+
+Now, suppose we have a polynomial in $n$ variables, $p(x_1, \dots, x_n)$. Then, let's rewrite this polynomial so that we have a polynomial in $x_n$, but the coefficients are polynomials $p_i$ in $x_1, \dots, x_{n-1}$, so we have 
+\[
+    p(x_1, \dots, x_n) = p_0(x_1, \dots, x_{n-1}) + p_1(x_1, \dots, x_{n-1}) x_n + \dots + p_m(x_1, \dots, x_{n-1}) x^m
+\]
+where $m$ is the maximal degree of $x_n$ that appears. Now, we can pick integer values of $x_1, \dots, x_{n-1}$ so that $p_m$ is nonzero (we know it has to be a non-zero polynomial by construction). After plugging in these values of $x_1, \dots, x_{n-1}$, we now have a degree $m$ polynomial in one variable, after which we can simply apply the $n = 1$ argument for $x_n$. This completes the induction. 
+\end{proof}
+Now, let's construct a Galois resolvent. Suppose $r_1, \dots, r_n$ are the distinct roots of a degree $n$ polynomial with rational coefficients. We claim that for some integer coefficients $x_1, \dots, x_n$ that when taking $p(r_1, \dots, r_n) = \sum_{i = 1}^n x_i r_i$ and acting on it with $S_n$, that over all $\pi \in S_n$ we get different numerical results for $\pi p(r_1, \dots, r_n)$. Let's consider the following enormous product over all unordered pairs of permutations $\sigma, \tau \in S_n$: 
+\[
+    \Delta = \prod_{\braces{\sigma, \tau} \subseteq S_n} (\sigma p(r_1, \dots, r_n) - \tau p(r_1, \dots, r_n))^2 = \prod_{\braces{\sigma, \tau} \subseteq S_n} \left[ \sum_{i = 1}^n x_i (r_{\sigma(i)} - r_{\tau(i)})\right]^2
+\]
+Note that if we can find some set of values for $x_i$ such that $\Delta$ is nonzero, then we've constructed a Galois resolvent for the roots. Note that $\Delta$ is a nonzero polynomial in the variables $x_1, \dots, x_n$ by construction, and is also symmetric upon permuting the roots, so the coefficients of each term is expressible in the elementary symmetric polynomials of the roots, which are all rational by hypothesis. Then, our lemma above gives us a construction for an $n$-tuple of integers $a_1, \dots, a_n$ that make the $\Delta$ nonzero, so we are done. As such, Galois resolvents exist for any polynomial with rational coefficients. 
 
 \subsection{How to Use a Galois Resolvent}
+Now that we have a Galois resolvent for any polynomial with rational coefficients, and can construct it, let's see how we can use it to solve for our roots. 
 
-\section{Splitting Fields}
+Suppose we have a polynomial $f(x)$ with rational coefficients that has simple roots $r_1, \dots, r_n$ (unknown), and a Galois resolvent $p = \sum_{i=1}^n x_i r_i$ for integer $x_i$. Consider the set of all numbers that are expressible in terms of rational expressions (a quotient of polynomial expressions) in rationals or the roots $r_1, \dots, r_n$, $\QQ[r_1, \dots, r_n]$. Then, the corollary to Lagrange's Rational Function Theorem says that this is the same set of numbers as $\QQ[p]$, where we take the set of all numbers that are expressible as rational expressions in rationals or the Galois resolvent $p$. This allows us to tie the solutions of the original polynomial equation to the solutions of the resolvent equation, which we can solve. If we can solve the resolvent equation and adjoin its roots to $\QQ$, then this effectively constitutes a solution to the original equation, as the roots $r_i$ can be evaluated in terms of $p$. 
+
+It feels like to some extent we have sort of made this ouroboros of a construction where we have reduced the solution of a general $n$th degree to a degree $n!$ polynomial, but this polynomial is often more symmetric and may sometimes be solvable in some cases. Galois' main contribution was to be able to characterize solutions constructed in this way by a Galois resolvent and answer algebraic questions about the nature of the solutions, especially if there were solutions to the original equations expressible in terms of radicals, the last standard algebraic operation we have not yet discussed so far. Gauss was able to express all roots of unity in terms of radicals, but Galois would be able to say when the roots of any $n$th degree polynomial were rationally expressible in radicals. 
+
+Note that the construction for our Galois resolvent above works if our polynomial has coefficients in any reasonable set of numbers in which we can add and multiply -- $\QQ$ is a reasonable such set, but $\RR$ would be too, and so would $\CC$! All of these are examples of \textbf{fields}, and we are essentially talking about \textbf{extending} these fields to include the roots of polynomials with coefficients in these fields. At this point, we want to be able to say firm, formal things about these sets of ``reasonable numbers in which we can add and multiply,'' and since we know a thing or two about groups and rings (... right?) in which we already have a notion of both addition and multiplication, we should want to level up to fields, now armed with the specific goal in mind of understanding what's going on with this idea of ``extending a field to include a polynomial's roots.'' 
+
+
+\section{Fields and Splitting Fields}
+It's now unavoidable to have some formal understanding of fields in order to study the problem we wish. Up to this point, we've managed to avoid any explicit use of fields and stick to maybe just a little bit of group theory essentially, but in order to do the tricks we want to do as seen in the last section, we need a formal definition of a ``reasonable set of numbers in which we can do standard algebraic operations.'' So let's talk about fields! 
 
 
 \section{Galois Groups}
