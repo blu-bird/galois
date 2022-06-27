@@ -304,7 +304,7 @@ Note that if we can find some set of values for $x_i$ such that $\Delta$ is nonz
 \subsection{How to Use a Galois Resolvent}
 Now that we have a Galois resolvent for any polynomial with rational coefficients, and can construct it, let's see how we can use it to solve for our roots. 
 
-Suppose we have a polynomial $f(x)$ with rational coefficients that has simple roots $r_1, \dots, r_n$ (unknown), and a Galois resolvent $p = \sum_{i=1}^n x_i r_i$ for integer $x_i$. Consider the set of all numbers that are expressible in terms of rational expressions (a quotient of polynomial expressions) in rationals or the roots $r_1, \dots, r_n$, $\QQ[r_1, \dots, r_n]$. Then, the corollary to Lagrange's Rational Function Theorem says that this is the same set of numbers as $\QQ[p]$, where we take the set of all numbers that are expressible as rational expressions in rationals or the Galois resolvent $p$. This allows us to tie the solutions of the original polynomial equation to the solutions of the resolvent equation, which we can solve. If we can solve the resolvent equation and adjoin its roots to $\QQ$, then this effectively constitutes a solution to the original equation, as the roots $r_i$ can be evaluated in terms of $p$. 
+Suppose we have a polynomial $f(x)$ with rational coefficients that has simple roots $r_1, \dots, r_n$ (unknown), and a Galois resolvent $p = \sum_{i=1}^n x_i r_i$ for integer $x_i$. Consider the set of all numbers that are expressible in terms of rational expressions (a quotient of polynomial expressions) in rationals or the roots $r_1, \dots, r_n$, $\QQ(r_1, \dots, r_n)$. Then, the corollary to Lagrange's Rational Function Theorem says that this is the same set of numbers as $\QQ(p)$, where we take the set of all numbers that are expressible as rational expressions in rationals or the Galois resolvent $p$. This allows us to tie the solutions of the original polynomial equation to the solutions of the resolvent equation, which we can solve. If we can solve the resolvent equation and adjoin its roots to $\QQ$, then this effectively constitutes a solution to the original equation, as the roots $r_i$ can be evaluated in terms of $p$. 
 
 It feels like to some extent we have sort of made this ouroboros of a construction where we have reduced the solution of a general $n$th degree to a degree $n!$ polynomial, but this polynomial is often more symmetric and may sometimes be solvable in some cases. Galois' main contribution was to be able to characterize solutions constructed in this way by a Galois resolvent and answer algebraic questions about the nature of the solutions, especially if there were solutions to the original equations expressible in terms of radicals, the last standard algebraic operation we have not yet discussed so far. Gauss was able to express all roots of unity in terms of radicals, but Galois would be able to say when the roots of any $n$th degree polynomial were rationally expressible in radicals. 
 
@@ -313,6 +313,54 @@ Note that the construction for our Galois resolvent above works if our polynomia
 
 \section{Fields and Splitting Fields}
 It's now unavoidable to have some formal understanding of fields in order to study the problem we wish. Up to this point, we've managed to avoid any explicit use of fields and stick to maybe just a little bit of group theory essentially, but in order to do the tricks we want to do as seen in the last section, we need a formal definition of a ``reasonable set of numbers in which we can do standard algebraic operations.'' So let's talk about fields! 
+
+\begin{definition}
+    A \textbf{field} is a set $F$ equipped with two operations, an addition operation $+ : F \times F \to F$ such that $(F, +)$ is an abelian group with identity element 0, and a multiplication operation $* : F \times F \to F$ such that $F - \braces 0$ is an abelian group, and the two operations distribute over each other. 
+
+    (Equivalently, a field is a commutative division ring.)
+\end{definition}
+\begin{example}[Prototypical Examples of Fields]
+ Common fields are $\QQ$, $\RR$, $\CC$, $\FF_p$ for prime $p$.  
+\end{example}
+Of course, we can have subfields -- fields that are subsets of other fields. But instead of thinking about subsets, we want to be thinking more about extending fields:
+\begin{definition}
+    If a field $K$ contains the subfield $F$, $K$ is an \textbf{extension} of $F$, denoted $K/F$. 
+\end{definition}
+\begin{remark}
+    Confusing note: notation $K/F$ is \textbf{not} meant to denote a quotient -- it means that the field $K$ is an extension over the field $F$. 
+\end{remark}
+Since $K$ contains $F$ inside it, right-multiplying by elements in $F$ makes $K$ a vector space over $F$. As such, we can define the \textbf{degree} of a field extension in this way: 
+\begin{definition}
+    The \textbf{degree} of a field extension $K/F$ is denoted $[K : F]$, and is equal to $\dim_F K$, i.e. the dimension of the vector space $K$ makes over $F$. (Note that this is possibly infinite.)
+\end{definition}
+Okay, that's enough vocabulary to get started. 
+
+\subsection{Algebraic Extensions}
+Let's first give a name to field extensions that add a root of a polynomial in the base field, and be able to formally talk about roots of polynomials whose coefficients lie in some base field. 
+\begin{definition}
+    Let $K/F$ be a field extension. An element $\alpha \in K$ is \textbf{algebraic} (over $F$) if it is a root of some nonzero polynomial $f(x) \in F[x]$. (If not, $\alpha$ is \textbf{transcendental}.)
+\end{definition}
+\begin{definition}
+    A field extension $K/F$ is \textbf{algebraic} if every element $\alpha \in K$ is algebraic over $F$. 
+\end{definition}
+For any algebraic element $\alpha$ over $F$, we can go backwards and find a polynomial $p \in F[x]$ that has $\alpha$ as a root. We can define a polynomial of minimal degree that divides all other polynomials that have $\alpha$ as a root: 
+\begin{definition}
+    If $\alpha$ is algebraic over $F$, the \textbf{minimal polynomial} of $\alpha$ 
+\end{definition}
+
+Furthermore, we can find such a polynomial $p$ that is irreducible and monic, i.e. has leading coefficient 1. 
+
+
+\subsection{Splitting Fields}
+
+\begin{theorem}
+    If $F$ is a field and $p(x) \in F[x]$ is irreducible, then there exists a field $K$ containing a root of $p(x)$ and a (isomorphic) copy of $F$. In particular, this field is unique up to isomorphism and is the ring $F[x]/(p(x))$. 
+\end{theorem}
+\begin{definition}
+    Let $F$ be a field and 
+\end{definition}
+
+\subsection{Separable Extensions}
 
 
 \section{Galois Groups}
